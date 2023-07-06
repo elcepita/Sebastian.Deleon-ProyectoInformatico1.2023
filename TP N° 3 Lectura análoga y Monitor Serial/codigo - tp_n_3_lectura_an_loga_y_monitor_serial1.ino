@@ -58,7 +58,7 @@ void loop()
   
    if(digitalRead(boton)==LOW && count==1)
   {
-  Serial.println("10 s para configurar el color del led");
+  Serial.println("10 s para cambiar el color del led");
   delay(10000);
   analogWrite(Rojo , color_R);
   analogWrite(Azul , color_A);
