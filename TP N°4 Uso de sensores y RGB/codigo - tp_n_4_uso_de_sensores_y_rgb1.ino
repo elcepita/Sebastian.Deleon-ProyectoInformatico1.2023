@@ -1,56 +1,62 @@
-#define Rojo 2
-#define Azul 3
-#define Verde 4
+#define rojo 2
+#define azul 3
+#define verde 4
 
-#define LDR A0
+#define ldr  A0
+#define temp A1
 
-#define TMP A1
-
-int LDR_val;
+int tmp;
+int luz;
+int valtemp;
+int valluz;
 
 void setup()
 {
-  pinMode(Rojo , OUTPUT);
-  pinMode(Azul , OUTPUT);
-  pinMode(Verde , OUTPUT);
-  
-  pinMode(LDR , INPUT);
-  pinMode(TMP , INPUT);
-  
-  Serial.begin(9600);
+  pinMode(  ldr , INPUT  );
+  pinMode(  temp , INPUT  );
+  pinMode(  rojo , OUTPUT );
+    pinMode(  azul , OUTPUT );
+    pinMode(  verde , OUTPUT );
+ 
+  Serial.begin( 9600 );
 }
 
 void loop()
 {
-  LDR_val=map(analogRead(LDR),0,310,0,100);
-  
-  int senal = analogRead(TMP);
-  float volt = (senal * 5.0/1024);
-  float temperatura =(volt*100-50);
-  
-  Serial.print("La luz actual es: ");
-  Serial.print(LDR_val );
-  Serial.print(" y la temperatura es: ");
-  Serial.print(temperatura);
-  Serial.println(" °C");
-
-  if (LDR_val==0 && temperatura>90)
-  {
-    digitalWrite(Rojo , HIGH);
-    digitalWrite(Verde , LOW);
-    digitalWrite(Azul , LOW);
+   
+    int luz = analogRead( ldr );
+  int valluz = map(luz , 1 , 310 , 0 , 100);
+Serial.print( "El nivel de luz actual es: " );
+  Serial.println( valluz );
+int tmp = analogRead(temp);
+  float volt = (tmp * 5.0 / 1024);
+  float valtemp = ( volt * 100 - 50 );
+    Serial.print( " y la temperatura actual: "  );
+    Serial.print( valtemp );
+    Serial.println( "°C" );
+    delay(1000);
+   
+    if(valluz == 0){
+      if(valtemp >= 90 ){
+          digitalWrite(rojo, HIGH);
+          digitalWrite(azul, LOW);
+          digitalWrite(verde, LOW);
+      }
+      if(valtemp <= 18){
+          digitalWrite(rojo, LOW);
+          digitalWrite(azul, HIGH);
+          digitalWrite(verde, LOW);
+      }
+      if(valtemp > 18 && valtemp < 90 ){
+          digitalWrite(rojo, LOW);
+          digitalWrite(azul, LOW);
+          digitalWrite(verde, HIGH);
+      }
+    }
+    else{
+    digitalWrite(rojo,  LOW);
+    digitalWrite(azul,  LOW);
+    digitalWrite(verde, LOW);
   }
-  if (LDR_val==0 && temperatura<90 && temperatura>18)
-  {
-    digitalWrite(Verde , HIGH);
-    digitalWrite(Azul , LOW);
-    digitalWrite(Rojo , LOW);
-  }
-  if (LDR_val==0 && temperatura<18)
-  {
-    digitalWrite(Azul , HIGH);
-    digitalWrite(Rojo , LOW);
-    digitalWrite(Verde , LOW);
-  }
-  delay(1500);
+ 
 }
