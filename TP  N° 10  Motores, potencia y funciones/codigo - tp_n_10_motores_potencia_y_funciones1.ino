@@ -1,9 +1,10 @@
 #include<Servo.h>
 
-#define led 4
 #define PIR1 2
 #define PIR2 3
-#define luz A0
+#define led 4
+
+#define fotoresistor A0
 
 Servo izq;
 Servo der;
@@ -14,7 +15,8 @@ void setup()
   pinMode(led, OUTPUT);
   pinMode(PIR1, INPUT);
   pinMode(PIR2, INPUT);
-  pinMode(luz, INPUT);
+  pinMode(fotoresistor, INPUT);
+  
   izq.attach(9);
   der.attach(10);
   
@@ -35,11 +37,6 @@ void lectura()
   int afuera = digitalRead(PIR1);
   int adentro = digitalRead(PIR2);
   
-  Serial.print("Afuera: ");
-  Serial.println(afuera);
-  Serial.print("Adentro: ");
-  Serial.println(adentro);
-  delay(2);
   
   if(afuera == 1 || adentro == 1)
   {
@@ -60,7 +57,7 @@ void lectura()
 void ambiente()
 {
   int estado;
-  int ldr = analogRead(luz); 
+  int ldr = analogRead(fotoresistor); 
   
   if(ldr < 100)
   {
